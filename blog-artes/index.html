@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artes 2026 — Blog IFSC Garopaba</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --sand:    #f5efe6;
+      --clay:    #c8956a;
+      --gold:    #c9a84c;
+      --dark:    #1a1a1a;
+      --mid:     #3d3d3d;
+      --light:   #fafafa;
+      --accent:  #7b3f6e;
+      --serif:   'Georgia', 'Times New Roman', serif;
+      --sans:    'Segoe UI', Arial, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--light); color: var(--dark); line-height: 1.7; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 999;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem; height: 56px;
+    }
+    .nav-brand { color: var(--gold); font-family: var(--serif); font-size: 1.1rem; letter-spacing: .08em; }
+    .nav-links { display: flex; gap: 1.6rem; list-style: none; }
+    .nav-links a { color: #ccc; text-decoration: none; font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; transition: color .2s; }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── Hero Banners ── */
+    .hero {
+      position: relative; height: 480px;
+      display: flex; align-items: flex-end; justify-content: center;
+      overflow: hidden;
+    }
+    .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.15) 55%, transparent 100%);
+    }
+    .hero-title {
+      position: relative; z-index: 1;
+      color: #fff; font-family: var(--serif);
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 700; letter-spacing: .04em;
+      text-shadow: 0 2px 18px rgba(0,0,0,.7);
+      padding-bottom: 2.5rem;
+    }
+
+    /* ── Section Wrappers ── */
+    .section-wrap { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem; }
+    .section-label {
+      display: inline-block;
+      font-size: .7rem; font-weight: 700; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--gold);
+      border-bottom: 2px solid var(--gold); padding-bottom: 2px;
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--serif); font-size: 2rem; color: var(--dark);
+      margin-bottom: 1.2rem;
+    }
+    .section-body { color: var(--mid); font-size: 1rem; }
+    .section-body p { margin-bottom: 1rem; }
+    .section-body ul { margin: .6rem 0 1rem 1.5rem; }
+    .section-body li { margin-bottom: .4rem; }
+    .section-body strong { color: var(--dark); }
+
+    /* ── Divider ── */
+    hr.thin { border: none; border-top: 1px solid #e0d8cf; margin: 0 auto; max-width: 900px; }
+
+    /* ── Topic Tabs ── */
+    .topic-tabs {
+      display: flex; gap: 0; overflow-x: auto;
+      background: var(--dark); padding: 0 2.5rem;
+    }
+    .topic-tabs a {
+      display: block; padding: .9rem 1.6rem;
+      color: #aaa; text-decoration: none; font-size: .8rem;
+      letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
+      border-bottom: 3px solid transparent; transition: all .2s;
+    }
+    .topic-tabs a:hover, .topic-tabs a.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    /* ── Process Cards ── */
+    .process-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap: 1.2rem; margin-top: 1.5rem; }
+    .process-card {
+      background: var(--sand); border-radius: 6px;
+      padding: 1.4rem 1.2rem; border-left: 4px solid var(--gold);
+    }
+    .process-card h4 { font-family: var(--serif); font-size: 1rem; margin-bottom: .5rem; color: var(--dark); }
+    .process-card p { font-size: .88rem; color: var(--mid); }
+
+    /* ── Quote ── */
+    blockquote {
+      border-left: 4px solid var(--accent); margin: 1.8rem 0;
+      padding: .8rem 1.4rem; background: #f3eef8; border-radius: 0 6px 6px 0;
+      font-style: italic; color: var(--mid);
+    }
+
+    /* ── Highlight Box ── */
+    .highlight-box {
+      background: var(--sand); border-radius: 8px;
+      padding: 1.6rem 1.8rem; margin: 1.5rem 0;
+      border: 1px solid #e2d9ce;
+    }
+    .highlight-box h3 { font-family: var(--serif); color: var(--clay); margin-bottom: .7rem; font-size: 1.2rem; }
+
+    /* ── Two-col layout ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+    @media (max-width: 620px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* ── Placeholder image frame ── */
+    .img-frame {
+      border-radius: 8px; overflow: hidden;
+      background: #ddd; aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      color: #888; font-size: .8rem; text-align: center;
+      padding: 1rem;
+    }
+    .img-frame img { width: 100%; height: 100%; object-fit: cover; }
+    .img-frame.vertical { aspect-ratio: 3/4; }
+
+    /* ── Tag chips ── */
+    .tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+    .tag {
+      background: var(--dark); color: var(--gold);
+      font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;
+      padding: .25rem .7rem; border-radius: 20px;
+    }
+
+    /* ── Footer / Quem Somos ── */
+    .footer-who {
+      background: linear-gradient(135deg, #1a1211 0%, #2e1f0f 100%);
+      color: #fff; padding: 4rem 1.5rem;
+    }
+    .footer-who-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+    @media (max-width: 620px) { .footer-who-inner { grid-template-columns: 1fr; } }
+    .footer-who h2 { font-family: var(--serif); font-size: 2rem; color: var(--gold); margin-bottom: 1rem; }
+    .footer-who p { color: #ccc; font-size: .95rem; margin-bottom: 1rem; }
+    .members-list { list-style: none; }
+    .members-list li {
+      padding: .55rem 0; border-bottom: 1px solid rgba(255,255,255,.1);
+      font-size: .9rem; letter-spacing: .05em; color: #e0d4c0;
+    }
+    .members-list li:last-child { border-bottom: none; }
+    .badge {
+      display: inline-block; background: var(--gold); color: var(--dark);
+      font-size: .62rem; font-weight: 700; letter-spacing: .1em;
+      padding: .15rem .5rem; border-radius: 4px; margin-right: .5rem; vertical-align: middle;
+    }
+    .footer-bottom {
+      background: #111; color: #555; text-align: center;
+      font-size: .75rem; padding: 1.2rem; letter-spacing: .06em;
+    }
+
+    /* ── Section color themes ── */
+    .theme-feminist .section-label { color: #b5386e; border-color: #b5386e; }
+    .theme-feminist .process-card { border-color: #b5386e; }
+    .theme-slam .section-label { color: #5c60c8; border-color: #5c60c8; }
+    .theme-slam .process-card { border-color: #5c60c8; }
+    .theme-egypt .section-label { color: var(--gold); border-color: var(--gold); }
+    .theme-egypt .process-card { border-color: var(--gold); }
+    .theme-arab .section-label { color: #2d8a5e; border-color: #2d8a5e; }
+    .theme-arab .process-card { border-color: #2d8a5e; }
+    .theme-folclore .section-label { color: #c1440e; border-color: #c1440e; }
+    .theme-folclore .process-card { border-color: #c1440e; }
+    .theme-ecosurf .section-label { color: #0a6e7c; border-color: #0a6e7c; }
+    .theme-ecosurf .process-card { border-color: #0a6e7c; }
+
+    /* ── Intro hero ── */
+    .main-hero {
+      height: 100vh; min-height: 560px;
+      background: linear-gradient(135deg, #1a0a2e 0%, #2e0d0d 50%, #1a1208 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 2rem;
+    }
+    .main-hero .eyebrow {
+      color: var(--gold); font-size: .78rem; letter-spacing: .25em;
+      text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .main-hero h1 {
+      font-family: var(--serif); color: #fff;
+      font-size: clamp(2.5rem, 8vw, 5.5rem); line-height: 1.1;
+      margin-bottom: 1.2rem;
+    }
+    .main-hero h1 span { color: var(--gold); }
+    .main-hero p { color: #bbb; max-width: 520px; font-size: 1rem; margin-bottom: 2.5rem; }
+    .scroll-btn {
+      display: inline-block; border: 1.5px solid var(--gold); color: var(--gold);
+      padding: .75rem 2rem; border-radius: 30px; font-size: .8rem;
+      letter-spacing: .12em; text-transform: uppercase; text-decoration: none;
+      transition: all .25s;
+    }
+    .scroll-btn:hover { background: var(--gold); color: var(--dark); }
+
+    /* ── Topics index ── */
+    .topics-index {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0; max-width: 100%;
+    }
+    .topic-index-card {
+      position: relative; height: 240px;
+      display: flex; align-items: flex-end;
+      overflow: hidden; text-decoration: none;
+    }
+    .topic-index-card img { position: absolute; inset:0; width:100%; height:100%; object-fit: cover; transition: transform .4s; }
+    .topic-index-card:hover img { transform: scale(1.06); }
+    .topic-index-card .ov {
+      position: absolute; inset:0;
+      background: linear-gradient(to top, rgba(0,0,0,.8) 0%, transparent 60%);
+    }
+    .topic-index-card .label {
+      position: relative; z-index:1; padding: 1.2rem;
+      color:#fff; font-family: var(--serif); font-size: 1.3rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════════════════ -->
+<nav>
+  <span class="nav-brand">Artes 2026 · IFSC Garopaba</span>
+  <ul class="nav-links">
+    <li><a href="#mulheres">Mulheres na Arte</a></li>
+    <li><a href="#slam">Slam</a></li>
+    <li><a href="#egito">Egito</a></li>
+    <li><a href="#arabe">Cultura Árabe</a></li>
+    <li><a href="#folclore">Festa Junina</a></li>
+    <li><a href="#ecosurf">Palestra ECOSURF</a></li>
+    <li><a href="#quem-somos">Sobre Nós</a></li>
+  </ul>
+</nav>
+
+<!-- ════════════════════════════════════════════════════
+     MAIN HERO
+════════════════════════════════════════════════════ -->
+<section class="main-hero">
+  <p class="eyebrow">Portfólio Digital · Disciplina de Arte</p>
+  <h1>Arte em <span>Muitas Vozes</span></h1>
+  <p>Um álbum de aprendizados, experiências e criações do grupo de Artes 2026 do IFSC Garopaba.</p>
+  <a href="#mulheres" class="scroll-btn">Explorar →</a>
+</section>
+
+<!-- Topics Index Grid -->
+<div class="topics-index">
+  <a class="topic-index-card" href="#mulheres">
+    <img src="imagens/mulheres-capa.png" alt="Mulheres na Arte" />
+    <div class="ov"></div>
+    <span class="label">Mulheres na Arte</span>
+  </a>
+  <a class="topic-index-card" href="#slam">
+    <img src="imagens/slam-capa.png" alt="Slam" />
+    <div class="ov"></div>
+    <span class="label">Slam</span>
+  </a>
+  <a class="topic-index-card" href="#egito">
+    <img src="imagens/egito-capa.png" alt="Egito Antigo" />
+    <div class="ov"></div>
+    <span class="label">Egito Antigo</span>
+  </a>
+  <a class="topic-index-card" href="#arabe">
+    <img src="imagens/arabe-capa.png" alt="Cultura Árabe" />
+    <div class="ov"></div>
+    <span class="label">Cultura Árabe</span>
+  </a>
+  <a class="topic-index-card" href="#folclore">
+    <img src="imagens/festa-quadrilha.jpg" alt="Folclore e Festa Junina" />
+    <div class="ov"></div>
+    <span class="label">Folclore e Festa Junina</span>
+  </a>
+  <a class="topic-index-card" href="#ecosurf" style="background: linear-gradient(135deg, #043c46, #0a6e7c);">
+    <div class="ov"></div>
+    <span class="label">Palestra ECOSURF</span>
+  </a>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     TEMA 1 — MULHERES NA ARTE
+════════════════════════════════════════════════════ -->
+<section id="mulheres">
+
+  <div class="hero" style="height:420px;">
+    <img src="imagens/mulheres-capa.png" alt="Mulheres na Arte" />
+    <div class="hero-overlay"></div>
+    <h2 class="hero-title">Mulheres na Arte</h2>
+  </div>
+
+  <!-- Apresentação -->
+  <div class="section-wrap theme-feminist">
+    <span class="section-label">Apresentação</span>
+    <h2 class="section-title">Quem tem voz na história da arte?</h2>
+    <div class="section-body">
+      <p>
+        As aulas sobre <strong>Mulheres na Arte</strong> nos convidaram a olhar para além das obras e pensar no contexto por trás delas: quem tem voz, quem é reconhecido e quem acaba sendo deixado de lado ao longo da história.
+      </p>
+      <div class="highlight-box">
+        <h3>Definições centrais</h3>
+        <ul>
+          <li><strong>Feminismo:</strong> conjunto de movimentos sociais, políticos e filosóficos que buscam a igualdade de gênero e ampliar o espaço de voz e atuação das mulheres em todas as esferas da sociedade.</li>
+          <li><strong>Patriarcado:</strong> sistema social em que o poder é concentrado nas figuras masculinas. Esse sistema influencia profundamente a arte, a cultura e o mercado criativo, ajudando a explicar por que tantas artistas foram apagadas ou desvalorizadas ao longo da história.</li>
+          <li><strong>Interseccionalidade:</strong> reconhecimento de que gênero, raça, classe e outros marcadores sociais se cruzam e produzem experiências distintas de opressão e resistência.</li>
+        </ul>
+      </div>
+      <p>
+        Vimos também a <em>Cartilha Violência contra a Mulher</em>, produzida pelo Governo do Estado de São Paulo dentro do Programa de Enfrentamento da Violência contra Meninas e Mulheres na Rede Estadual de Educação, que traz dados, definições legais e ferramentas de apoio às vítimas.
+      </p>
+      <div class="tags">
+        <span class="tag">Feminismo</span>
+        <span class="tag">Patriarcado</span>
+        <span class="tag">Representatividade</span>
+        <span class="tag">Artes Visuais</span>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Contextualização -->
+  <div class="section-wrap theme-feminist">
+    <span class="section-label">Contextualização</span>
+    <h2 class="section-title">Em que contexto essa arte surge?</h2>
+    <div class="section-body two-col">
+      <div>
+        <p>
+          Durante séculos, academias de arte oficiais na Europa <strong>proibiam a entrada de mulheres</strong>. Sem acesso ao ensino formal, ao uso de modelos vivos ou ao mercado de arte, artistas como <em>Artemisia Gentileschi</em>, <em>Berthe Morisot</em> e <em>Tarsila do Amaral</em> precisaram superar barreiras institucionais para se firmar.
+        </p>
+        <p>
+          No Brasil, o movimento feminista ganhou força especialmente a partir dos anos 1970, durante a ditadura militar. Artistas como <em>Anna Maria Maiolino</em> e <em>Lygia Clark</em> produziram obras que questionavam tanto o regime político quanto os papéis de gênero impostos pela sociedade.
+        </p>
+        <blockquote>
+          "Por que não houve grandes artistas mulheres?" — Linda Nochlin, 1971. Essa pergunta histórica expôs as estruturas sociais, e não a falta de talento, como a causa do apagamento feminino na arte.
+        </blockquote>
+      </div>
+      <div>
+        <p>
+          Hoje, movimentos como o <strong>Guerrilla Girls</strong> (coletivo anônimo de artistas ativistas fundado em 1985 em Nova York) continuam denunciando a sub-representação de mulheres e artistas de cor em museus e galerias ao redor do mundo.
+        </p>
+        <div class="highlight-box">
+          <h3>Fatos marcantes</h3>
+          <ul>
+            <li>Em 2020, apenas 11% das obras em museus norte-americanos eram de artistas mulheres.</li>
+            <li>Artemisia Gentileschi foi a 1ª mulher aceita na Academia de Arte de Florença (1616).</li>
+            <li>Tarsila do Amaral é a artista brasileira mais valiosa em leilões internacionais.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Trabalhos Práticos -->
+  <div class="section-wrap theme-feminist">
+    <span class="section-label">Trabalhos Práticos</span>
+    <h2 class="section-title">Produções em aula</h2>
+    <div class="section-body">
+      <div class="one-col">
+        <div class="img-frame vertical"><img src="imagens/cartaz-mulheres.png" alt="mulheres na arte"></div>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Resultado -->
+  <div class="section-wrap theme-feminist">
+    <span class="section-label">Resultado Final</span>
+    <h2 class="section-title">Reflexões e aprendizados</h2>
+    <div class="section-body">
+      <p>
+        As aulas sobre Mulheres na Arte nos deixaram com uma visão mais crítica sobre o que escolhemos consumir, valorizar e reconhecer como arte. Percebemos que o apagamento de artistas femininas não foi um acidente histórico, mas o resultado de estruturas sociais que precisam ser ativamente questionadas.
+      </p>
+      <blockquote>
+        A arte feminina não é um gênero separado — é a história da arte que foi sistematicamente silenciada e que agora encontra espaço para falar.
+      </blockquote>
+      <p>
+        Como grupo, saímos dessa unidade com o compromisso de olhar para a arte de forma mais inclusiva, reconhecendo vozes que foram historicamente marginalizadas e valorizando a diversidade como parte essencial da produção cultural.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     TEMA 2 — SLAM
+════════════════════════════════════════════════════ -->
+<section id="slam" style="background:#f0f0f8;">
+
+  <div class="hero" style="height:420px;">
+    <img src="imagens/slam-capa.png" alt="Slam Poetry" />
+    <div class="hero-overlay"></div>
+    <h2 class="hero-title">Slam</h2>
+  </div>
+
+  <!-- Apresentação -->
+  <div class="section-wrap theme-slam">
+    <span class="section-label">Apresentação</span>
+    <h2 class="section-title">A poesia que sobe ao palco</h2>
+    <div class="section-body">
+      <p>
+        <strong>Slam</strong> é uma modalidade de poesia performática e competitiva que nasceu nos Estados Unidos, em Chicago, no ano de 1986, pelas mãos do poeta Marc Kelly Smith. O termo vem do inglês <em>slam</em>, que pode significar "bater com força" — uma referência ao impacto que a palavra tem quando dita em voz alta, com emoção e intenção.
+      </p>
+      <div class="highlight-box">
+        <h3>Características do Slam</h3>
+        <ul>
+          <li><strong>Poesia oral:</strong> o texto é declamado, nunca simplesmente lido. A voz, o corpo e o ritmo fazem parte da obra.</li>
+          <li><strong>Sem recursos cênicos:</strong> não há música ao vivo, fantasias ou adereços — só a palavra e o poeta.</li>
+          <li><strong>Formato competitivo:</strong> cada slammer tem até 3 minutos. Jurados da plateia atribuem notas.</li>
+          <li><strong>Temática social:</strong> identidade, racismo, amor, periferia, gênero, política — nada está fora do alcance do slam.</li>
+          <li><strong>Democrático:</strong> não exige formação acadêmica. Qualquer pessoa pode participar.</li>
+        </ul>
+      </div>
+      <div class="tags">
+        <span class="tag">Poesia oral</span>
+        <span class="tag">Performance</span>
+        <span class="tag">Ativismo</span>
+        <span class="tag">Juventude</span>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Contextualização -->
+  <div class="section-wrap theme-slam">
+    <span class="section-label">Contextualização</span>
+    <h2 class="section-title">De Chicago ao Brasil: o slam nas periferias</h2>
+    <div class="section-body two-col">
+      <div>
+        <p>
+          O Slam chegou ao Brasil nos anos 2000 e encontrou nas periferias urbanas um solo fértil. Em São Paulo, a <strong>Cooperifa</strong> (Cooperativa Cultural da Periferia) e o <strong>Slam da Guilhermina</strong> tornaram-se referências nacionais, revelando poetas como Emicida, antes de sua carreira musical.
+        </p>
+        <p>
+          No contexto brasileiro, o slam se entrelaça com o <em>sarau</em> e outras formas de manifestação cultural periférica, sendo um espaço de resistência e afirmação de identidades que raramente encontram espaço na mídia ou nas instituições culturais tradicionais.
+        </p>
+      </div>
+      <div>
+        <blockquote>
+          "O slam é o lugar onde a palavra da periferia sobe ao centro." — Emerson Alcalde, slammer paulistano
+        </blockquote>
+        <div class="highlight-box">
+          <h3>Slam no Brasil</h3>
+          <ul>
+            <li><strong>1ª edição brasileira:</strong> São Paulo, 2008 (Slam da Guilhermina)</li>
+            <li><strong>Copa do Mundo de Slam:</strong> evento internacional em que o Brasil já teve finalistas.</li>
+            <li><strong>Slam das Minas:</strong> o maior campeonato de slam feminino do mundo, realizado em BH.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Trabalhos Práticos -->
+  <div class="section-wrap theme-slam">
+    <span class="section-label">Trabalhos Práticos</span>
+    <h2 class="section-title">Produções em aula</h2>
+    <div class="section-body">
+      <div class="one-col">
+        <div class="img-frame vertical"><img src="imagens/slam-artes.png" alt="slam em artes"></div>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Resultado -->
+  <div class="section-wrap theme-slam">
+    <span class="section-label">Resultado Final</span>
+    <h2 class="section-title">A palavra como arte e resistência</h2>
+    <div class="section-body">
+      <p>
+        O contato com o slam ampliou nossa concepção de arte: percebemos que ela não precisa de suporte físico, moldura ou museu. A voz humana carregada de intenção já é arte em estado bruto.
+      </p>
+      <blockquote>
+        "O slam nos ensinou que a nossa história, contada com nossa própria voz, é a obra mais autentica que podemos criar."
+      </blockquote>
+      <p>
+        Cada integrante saiu com a percepção de que se expressar — mesmo de forma imperfeita — é um ato corajoso e necessário. O slam nos deu ferramentas para isso.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     TEMA 3 — EGITO ANTIGO  (tema principal)
+════════════════════════════════════════════════════ -->
+<section id="egito">
+
+  <div class="hero" style="height:480px;">
+    <img src="imagens/egito-capa.png" alt="Arte Egípcia Antiga" />
+    <div class="hero-overlay" style="background: linear-gradient(to top, rgba(0,0,0,.8) 0%, rgba(0,0,0,.2) 55%, transparent 100%);"></div>
+    <h2 class="hero-title">Antiguidade no Egito</h2>
+  </div>
+
+  <!-- Apresentação -->
+  <div class="section-wrap theme-egypt">
+    <span class="section-label">Apresentação</span>
+    <h2 class="section-title">O que é a arte egípcia antiga?</h2>
+    <div class="section-body">
+      <p>
+        A <strong>arte do Egito Antigo</strong> é uma das manifestações artísticas mais longas e consistentes da história humana, desenvolvida ao longo de aproximadamente <strong>3.000 anos</strong> (por volta de 3100 a.C. até 30 a.C., com a conquista romana). Ao contrário do que muitas vezes imaginamos, essa arte não era produzida para ser admirada esteticamente — ela tinha funções religiosas, políticas e funerárias bem definidas.
+      </p>
+
+      <div class="highlight-box">
+        <h3>Definições e conceitos-chave</h3>
+        <ul>
+          <li>
+            <strong>Hieróglifos:</strong> sistema de escrita pictórico e fonético dos egípcios. Cada símbolo podia representar um som, uma ideia ou um objeto. Eram usados em templos, tumbas, papiros e monumentos. O nome vem do grego: <em>hieros</em> (sagrado) + <em>glyphein</em> (esculpir).
+          </li>
+          <li>
+            <strong>Cânone egípcio:</strong> conjunto rígido de regras que determinava como os seres humanos deveriam ser representados — cabeça de perfil, olho de frente, ombros de frente, quadris e pernas de perfil. Esse padrão durou milênios sem grandes alterações.
+          </li>
+          <li>
+            <strong>Lei da frontalidade:</strong> princípio visual em que as figuras são desenhadas mostrando cada parte do corpo em seu ângulo mais reconhecível, independentemente de ser anatomicamente possível numa posição única.
+          </li>
+          <li>
+            <strong>Hierarquia de tamanho:</strong> figuras mais importantes (faraós, deuses) eram representadas em tamanho maior. O tamanho indicava poder, não perspectiva.
+          </li>
+          <li>
+            <strong>Papiro:</strong> material de escrita feito das fibras da planta <em>Cyperus papyrus</em>, abundante no delta do Nilo. Foi o principal suporte para textos e ilustrações egípcias.
+          </li>
+          <li>
+            <strong>Necrópole e tumba:</strong> cemitérios e câmaras funerárias onde os mortos eram enterrados com pertences, textos e obras de arte para a vida após a morte.
+          </li>
+        </ul>
+      </div>
+
+      <div class="tags">
+        <span class="tag">Arte Antiga</span>
+        <span class="tag">Hieróglifos</span>
+        <span class="tag">Pintura</span>
+        <span class="tag">Escultura</span>
+        <span class="tag">Arquitetura</span>
+        <span class="tag">Religião</span>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Contextualização -->
+  <div class="section-wrap theme-egypt">
+    <span class="section-label">Contextualização</span>
+    <h2 class="section-title">Em que contexto essa arte aparece?</h2>
+    <div class="section-body">
+      <p>
+        A civilização egípcia nasceu e floresceu às margens do <strong>rio Nilo</strong>, no nordeste da África. As cheias anuais do rio fertilizavam as margens e garantiam colheitas generosas em meio ao deserto — essa abundância relativa permitiu que os egípcios desenvolvessem uma sociedade complexa, com hierarquias, Estado centralizado, religião organizada e, claro, arte monumental.
+      </p>
+
+      <div class="two-col">
+        <div>
+          <div class="highlight-box">
+            <h3>Arte a serviço da religião e do poder</h3>
+            <p style="font-size:.9rem; color: var(--mid);">
+              No Egito Antigo, arte e religião eram inseparáveis. As obras não eram feitas para museus ou coleções — elas <em>cumpriam funções rituais</em>. Pinturas em tumbas garantiam que o morto tivesse na vida após a morte tudo o que tivera em vida. Estátuas de faraós serviam como "duplos" espirituais (os <em>ka</em>) que os deuses podiam habitar.
+            </p>
+          </div>
+          <p>
+            O <strong>faraó</strong> era considerado um ser divino — filho de Ra (deus do sol) e intermediário entre os deuses e os homens. Toda a produção artística egípcia girava, de alguma forma, em torno dessa figura. Representá-lo corretamente e eternamente era uma obrigação religiosa.
+          </p>
+        </div>
+        <div>
+          <div class="highlight-box">
+            <h3>Períodos da arte egípcia</h3>
+            <ul style="font-size:.88rem;">
+              <li><strong>Período Pré-Dinástico</strong> (antes de 3100 a.C.): cerâmica e pinturas rupestres.</li>
+              <li><strong>Período Arcaico / Antigo Império</strong> (2686–2181 a.C.): grandes pirâmides (Gizé), Esfinge, estatuária monumental.</li>
+              <li><strong>Médio Império</strong> (2055–1650 a.C.): refinamento da escultura, literatura e ritos funerários.</li>
+              <li><strong>Novo Império</strong> (1550–1069 a.C.): auge da pintura tumular, templos de Luxor e Karnak, Vale dos Reis (Tutankamon).</li>
+              <li><strong>Período Tardio e Greco-Romano</strong> (664–30 a.C.): fusão com influências gregas e romanas.</li>
+            </ul>
+          </div>
+          <blockquote>
+            "No Egito, a arte não imita a realidade — ela a perpetua. Cada imagem tem o poder de existir para sempre."
+          </blockquote>
+        </div>
+      </div>
+
+      <p style="margin-top:1.2rem;">
+        A arquitetura egípcia — com suas pirâmides, esfinges, obeliscos e templos colunados — foi concebida para durar a eternidade. O uso de granito, arenito e calcário garantia monumentos que, de fato, atravessaram milênios. A orientação dos templos em relação ao sol e às estrelas revela o profundo conhecimento astronômico dos egípcios.
+      </p>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Trabalhos Práticos -->
+  <div class="section-wrap theme-egypt">
+    <span class="section-label">Trabalhos Práticos</span>
+    <h2 class="section-title">Produções em aula</h2>
+    <div class="section-body">
+      <div class="two-col">
+        <div class="img-frame"><img src="imagens/egito1.jpg" alt=""></div>
+        <div class="img-frame"><img src="imagens/egito2.jpg" alt=""></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     TEMA 4 — CULTURA ÁRABE
+════════════════════════════════════════════════════ -->
+<section id="arabe" style="background:#f0f5f2;">
+
+  <div class="hero" style="height:420px;">
+    <img src="imagens/arabe-capa.png" alt="Cultura Árabe" />
+    <div class="hero-overlay"></div>
+    <h2 class="hero-title">Cultura Árabe</h2>
+  </div>
+
+  <!-- Apresentação -->
+  <div class="section-wrap theme-arab">
+    <span class="section-label">Apresentação</span>
+    <h2 class="section-title">Uma arte que proíbe e inventa ao mesmo tempo</h2>
+    <div class="section-body">
+      <p>
+        A <strong>arte árabe e islâmica</strong> é uma das mais ricas e complexas tradições visuais do mundo. Desenvolvida ao longo de mais de 14 séculos, ela abrange uma enorme diversidade geográfica — do Marrocos à Indonésia — e se caracteriza por elementos que a tornam imediatamente reconhecível.
+      </p>
+      <div class="highlight-box">
+        <h3>Definições centrais</h3>
+        <ul>
+          <li><strong>Arabesco:</strong> padrão decorativo baseado em entrelaçamentos geométricos e vegetais. A palavra vem do italiano <em>arabesco</em> ("à maneira árabe"). Por razões religiosas, a arte islâmica evitou representações humanas e animais, investindo toda sua criatividade nos padrões geométricos.</li>
+          <li><strong>Caligrafia árabe:</strong> considerada a mais elevada forma de arte no mundo islâmico. A escrita do Alcorão transformou as letras em arte sagrada. A palavra <em>Allah</em> (Deus) representada caligraficamente é em si uma obra de arte.</li>
+          <li><strong>Geometria sagrada:</strong> padrões matemáticos complexos, como os <em>girih</em> (azulejos geométricos), que expressam a ordem divina do universo sem recorrer à figura humana.</li>
+          <li><strong>Arquitetura islâmica:</strong> minaretes, cúpulas, arcos em ferradura, muqarnas (abóbadas em favos de mel) — elementos que definem mesquitas, madrassas e palácios.</li>
+        </ul>
+      </div>
+      <div class="tags">
+        <span class="tag">Islam</span>
+        <span class="tag">Arabesco</span>
+        <span class="tag">Caligrafia</span>
+        <span class="tag">Geometria</span>
+        <span class="tag">Arquitetura</span>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Contextualização -->
+  <div class="section-wrap theme-arab">
+    <span class="section-label">Contextualização</span>
+    <h2 class="section-title">Arte, fé e matemática</h2>
+    <div class="section-body two-col">
+      <div>
+        <p>
+          O Islamismo surgiu na Península Arábica no século VII d.C., com o profeta Maomé. A proibição islâmica da representação de seres vivos — baseada na ideia de que só Deus pode criar vida — redirecionou o impulso artístico dos povos islâmicos para formas não figurativas: a geometria, a caligrafia e os padrões vegetais.
+        </p>
+        <p>
+          Mas longe de ser uma limitação, essa restrição gerou uma das mais sofisticadas tradições decorativas da história. Os artistas islâmicos descobriram padrões matemáticos que os ocidentais só formalizariam séculos depois — como as <strong>teselações de Penrose</strong>, encontradas em azulejos islâmicos medievais desde o século XIII.
+        </p>
+      </div>
+      <div>
+        <blockquote>
+          "Enquanto a arte europeia medieval colocava Deus em forma humana, a arte islâmica buscou Deus na perfeição matemática do universo."
+        </blockquote>
+        <div class="highlight-box">
+          <h3>Grandes monumentos</h3>
+          <ul>
+            <li><strong>Alhambra</strong> (Granada, Espanha) — palácio islâmico com arabescos e muqarnas deslumbrantes.</li>
+            <li><strong>Cúpula da Rocha</strong> (Jerusalém) — um dos primeiros e mais importantes monumentos islâmicos.</li>
+            <li><strong>Taj Mahal</strong> (Agra, Índia) — mausoléu islâmico do séc. XVII, Patrimônio da Humanidade.</li>
+            <li><strong>Mesquita de Córdoba</strong> (Espanha) — exemplo magistral da arquitetura islâmica medieval.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Resultado -->
+  <div class="section-wrap theme-arab">
+    <span class="section-label">Resultado Final</span>
+    <h2 class="section-title">O que a cultura árabe nos deixou</h2>
+    <div class="section-body">
+      <p>
+        A imersão na cultura árabe e islâmica ampliou nossa percepção sobre diversidade cultural e artística. Percebemos que a arte não tem uma única linguagem universal — cada civilização desenvolve seus próprios códigos visuais, e aprender a lê-los é ampliar nosso repertório humano.
+      </p>
+      <blockquote>
+        "A arte islâmica nos ensinou que beleza e precisão não são opostos — são parceiros. E que a fé pode gerar formas que a matemática admira."
+      </blockquote>
+      <p>
+        Como grupo, saímos dessa unidade com maior respeito pela diversidade cultural e com a compreensão de que julgamentos estéticos são sempre culturalmente situados. O que nos parece estranho ou exótico à primeira vista esconde uma lógica sofisticada e uma tradição profunda.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     TEMA 5 — FOLCLORE E FESTA JUNINA
+════════════════════════════════════════════════════ -->
+<section id="folclore" style="background:#fbf3ea;">
+
+  <div class="hero" style="height:420px;">
+    <img src="imagens/festa-quadrilha.jpg" alt="Festa Junina" />
+    <div class="hero-overlay"></div>
+    <h2 class="hero-title">Folclore e Festa Junina</h2>
+  </div>
+
+  <!-- Apresentação -->
+  <div class="section-wrap theme-folclore">
+    <span class="section-label">Apresentação</span>
+    <h2 class="section-title">O que é folclore e por que ele é importante?</h2>
+    <div class="section-body">
+      <p>
+        O <strong>folclore</strong> reúne o conjunto de tradições, lendas, músicas, danças, festas, costumes e conhecimentos populares que são transmitidos de geração em geração, muitas vezes de forma oral. É um patrimônio vivo, que se transforma com o tempo, mas que carrega em si a memória de um povo.
+      </p>
+      <div class="highlight-box">
+        <h3>Por que o folclore importa</h3>
+        <ul>
+          <li>Ajuda a <strong>preservar a cultura brasileira</strong>, mantendo vivas práticas que poderiam se perder com a modernização e a globalização.</li>
+          <li>Fortalece a <strong>identidade do povo</strong>, criando um senso de pertencimento e continuidade entre gerações.</li>
+          <li>Funciona como espaço de <strong>encontro comunitário</strong>, aproximando famílias, escolas e vizinhanças em torno de celebrações coletivas.</li>
+          <li>Registra, de forma simbólica, a <strong>história e a mistura de povos</strong> que formaram o Brasil.</li>
+        </ul>
+      </div>
+      <div class="tags">
+        <span class="tag">Folclore</span>
+        <span class="tag">Tradição Popular</span>
+        <span class="tag">Cultura Brasileira</span>
+        <span class="tag">Festa Junina</span>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Contextualização -->
+  <div class="section-wrap theme-folclore">
+    <span class="section-label">Contextualização</span>
+    <h2 class="section-title">Qual a origem da festa junina?</h2>
+    <div class="section-body two-col">
+      <div>
+        <p>
+          A festa junina tem origem na <strong>Europa</strong>, ligada às antigas comemorações do <em>solstício de verão</em>, quando os povos celebravam a fartura das colheitas com fogueiras, danças e rituais agrícolas. Com a chegada do cristianismo, essas celebrações foram incorporadas ao calendário católico e passaram a homenagear três santos: <strong>Santo Antônio</strong>, <strong>São João</strong> e <strong>São Pedro</strong>, cujas festividades ocorrem em junho.
+        </p>
+        <p>
+          A tradição chegou ao Brasil durante a <strong>colonização portuguesa</strong> e, aos poucos, foi se misturando a elementos da cultura indígena e africana já presentes no país — o milho, por exemplo, um alimento típico das festas juninas, tem origem indígena. Assim, o que era uma festa europeia ganhou uma identidade genuinamente brasileira, com quadrilhas, comidas típicas, fogueiras e roupas caipiras.
+        </p>
+      </div>
+      <div>
+        <blockquote>
+          "A festa junina é um exemplo perfeito de como o folclore se transforma: nasceu na Europa, mas só existe do jeito que conhecemos hoje por causa do Brasil."
+        </blockquote>
+        <div class="highlight-box">
+          <h3>Símbolos da festa junina</h3>
+          <ul>
+            <li><strong>Fogueira:</strong> remete aos antigos rituais de solstício e à homenagem a São João.</li>
+            <li><strong>Quadrilha:</strong> dança que reproduz, de forma parodiada, um casamento caipira.</li>
+            <li><strong>Bandeirinhas coloridas:</strong> enfeitam ruas, escolas e arraiás.</li>
+            <li><strong>Comidas à base de milho:</strong> pamonha, canjica, curau e pipoca.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Particularidades regionais -->
+  <div class="section-wrap theme-folclore">
+    <span class="section-label">Particularidades Regionais</span>
+    <h2 class="section-title">O que há de diferente nas festas juninas de Santa Catarina?</h2>
+    <div class="section-body">
+      <p>
+        Em <strong>Santa Catarina</strong>, a festa junina ganha um sabor próprio por causa da forte presença de imigrantes europeus que colonizaram o estado. As influências das culturas <strong>alemã, italiana, açoriana e polonesa</strong> se misturam à tradição junina de origem lusitana, criando festas com um caráter bem particular.
+      </p>
+      <div class="highlight-box">
+        <h3>Marcas das festas juninas catarinenses</h3>
+        <ul>
+          <li><strong>Comidas típicas regionais:</strong> ao lado da pamonha e da canjica, aparecem pratos com influência germânica e italiana, como massas, embutidos e doces coloniais.</li>
+          <li><strong>Grupos folclóricos:</strong> apresentações de danças tradicionais açorianas, alemãs e italianas dividem espaço com a quadrilha caipira.</li>
+          <li><strong>Quadrilhas e fogueiras:</strong> continuam presentes como no restante do Brasil, mas muitas vezes organizadas junto a associações de imigrantes e clubes de caça e tiro.</li>
+          <li><strong>Festas escolares e comunitárias:</strong> escolas como o IFSC e associações de bairro promovem arraiás com decoração, comidas e apresentações produzidas pelos próprios estudantes e moradores.</li>
+        </ul>
+      </div>
+      <p>
+        Esse encontro de tradições mostra como o folclore não é algo fixo: ele se adapta ao lugar onde é vivido, incorporando novos sabores, sons e histórias sem deixar de lado sua essência popular.
+      </p>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Trabalhos Práticos -->
+  <div class="section-wrap theme-folclore">
+    <span class="section-label">Trabalhos Práticos</span>
+    <h2 class="section-title">Nosso arraiá no IFSC Garopaba</h2>
+    <div class="section-body">
+      <p>
+        Participamos da organização e das apresentações da festa junina do campus, incluindo quadrilha, música ao vivo, cabine de fotos temática e produção de comidas típicas.
+      </p>
+      <div class="process-grid">
+        <div class="img-frame"><img src="imagens/festa-quadrilha.jpg" alt="Quadrilha junina no pátio do IFSC"></div>
+        <div class="img-frame"><img src="imagens/festa-violao.jpg" alt="Apresentação musical ao violão"></div>
+        <div class="img-frame"><img src="imagens/festa-cozinha.jpg" alt="Preparo de comidas típicas"></div>
+        <div class="img-frame vertical"><img src="imagens/festa-moldura1.jpg" alt="Moldura temática Terceirão IFSC 2026"></div>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Resultado -->
+  <div class="section-wrap theme-folclore">
+    <span class="section-label">Resultado Final</span>
+    <h2 class="section-title">O que o arraiá nos ensinou</h2>
+    <div class="section-body">
+      <p>
+        Organizar e viver a festa junina do campus nos aproximou de uma tradição que, mesmo sendo tão presente no calendário escolar, muitas vezes conhecemos apenas de forma superficial. Pesquisar sua origem e entender as particularidades da nossa região nos fez perceber o quanto o folclore catarinense é resultado de encontros — entre povos, entre culturas, entre gerações.
+      </p>
+      <blockquote>
+        O folclore não é um museu parado no tempo. É uma festa viva, que cada comunidade recria à sua maneira, com seu próprio tempero.
+      </blockquote>
+      <p>
+        Como grupo, saímos dessa vivência com mais orgulho da nossa cultura regional e com a certeza de que celebrar tradições populares também é uma forma de fazer arte.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     TEMA 6 — PALESTRA ECOSURF
+════════════════════════════════════════════════════ -->
+<section id="ecosurf">
+
+  <div class="hero" style="height:420px; background: linear-gradient(135deg, #043c46 0%, #0a6e7c 55%, #0f8a91 100%);">
+    <div class="hero-overlay"></div>
+    <h2 class="hero-title">Palestra ECOSURF</h2>
+  </div>
+
+  <!-- Apresentação -->
+  <div class="section-wrap theme-ecosurf">
+    <span class="section-label">Apresentação</span>
+    <h2 class="section-title">O que é sustentabilidade?</h2>
+    <div class="section-body">
+      <p>
+        <strong>Sustentabilidade</strong> é a capacidade de atender às necessidades do presente sem comprometer a capacidade das futuras gerações de atenderem às suas próprias necessidades. Trata-se de buscar um equilíbrio entre três pilares: o <strong>meio ambiente</strong>, a <strong>economia</strong> e a <strong>sociedade</strong>.
+      </p>
+      <div class="highlight-box">
+        <h3>Quem é a ECOSURF?</h3>
+        <p style="font-size:.92rem; color: var(--mid); margin-bottom:.6rem;">
+          A <strong>ECOSURF</strong> é uma organização brasileira sem fins lucrativos, fundada em <strong>2000</strong> por um grupo de surfistas em <strong>Itanhaém, litoral de São Paulo</strong>. Desde então, atua na proteção dos oceanos, praias e zonas costeiras.
+        </p>
+        <ul>
+          <li>Limpeza de praias e regiões costeiras.</li>
+          <li>Educação ambiental voltada a escolas e comunidades.</li>
+          <li>Mobilização social em torno da preservação marinha.</li>
+          <li>Defesa de políticas públicas para o oceano.</li>
+          <li>Ações de enfrentamento à crise climática.</li>
+        </ul>
+      </div>
+      <div class="tags">
+        <span class="tag">Sustentabilidade</span>
+        <span class="tag">Oceanos</span>
+        <span class="tag">ECOSURF</span>
+        <span class="tag">Economia Circular</span>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Contextualização -->
+  <div class="section-wrap theme-ecosurf">
+    <span class="section-label">Contextualização</span>
+    <h2 class="section-title">Como a ECOSURF atua na região?</h2>
+    <div class="section-body two-col">
+      <div>
+        <p>
+          A ECOSURF atua por meio de <strong>coletivos e embaixadores</strong> espalhados em diferentes locais do Brasil. Um de seus principais projetos, o <strong>Missão Oceano</strong>, concentra suas ações no <strong>litoral centro-sul de São Paulo</strong>, realizando limpezas periódicas de praias, atividades de educação ambiental e coleta sistemática de resíduos sólidos.
+        </p>
+        <p>
+          Essas ações não se limitam à retirada do lixo: envolvem também a formação de voluntários, o engajamento de escolas e comunidades locais e a produção de dados sobre os tipos de resíduos encontrados, que ajudam a entender de onde vem a poluição costeira.
+        </p>
+      </div>
+      <div>
+        <div class="highlight-box">
+          <h3>Números do Missão Oceano</h3>
+          <ul>
+            <li>Mais de <strong>19.428 kg (19,4 toneladas)</strong> de resíduos sólidos já retirados das praias brasileiras.</li>
+            <li>Garrafas e demais materiais são coletados nas <strong>praias, regiões costeiras e áreas de difícil acesso</strong> afetadas pela poluição.</li>
+          </ul>
+        </div>
+        <blockquote>
+          "Cada garrafa recolhida na areia é também um dado: ele mostra por onde e como o lixo chega até o mar."
+        </blockquote>
+      </div>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Economia circular -->
+  <div class="section-wrap theme-ecosurf">
+    <span class="section-label">Economia Circular</span>
+    <h2 class="section-title">Para onde vai o que é recolhido</h2>
+    <div class="section-body">
+      <div class="highlight-box">
+        <h3>O destino dos materiais</h3>
+        <ul>
+          <li><strong>Garrafas:</strong> são encaminhadas para cooperativas parceiras, onde passam por triagem e reciclagem, retornando como matéria-prima para novos produtos — dentro do conceito de economia circular.</li>
+          <li><strong>Tampas:</strong> também são separadas durante a triagem e seguem para reciclagem, sendo reaproveitadas na fabricação de novos produtos plásticos.</li>
+          <li><strong>Rótulos:</strong> passam pela triagem e recebem destinação ambientalmente correta junto com os demais resíduos, garantindo rastreabilidade e reciclagem sempre que possível.</li>
+        </ul>
+      </div>
+      <p>
+        Esse processo mostra que a limpeza de praias é só o primeiro passo de um ciclo maior: cada resíduo recolhido pode voltar à cadeia produtiva em vez de continuar poluindo o ambiente marinho.
+      </p>
+    </div>
+  </div>
+  <hr class="thin" />
+
+  <!-- Resultado -->
+  <div class="section-wrap theme-ecosurf">
+    <span class="section-label">Resultado Final</span>
+    <h2 class="section-title">O que considero mais transformador</h2>
+    <div class="section-body">
+      <blockquote>
+        "A parte que mais me chamou a atenção foi perceber que a ECOSURF vai muito além da limpeza das praias. Ela promove educação ambiental, incentiva mudanças de comportamento e mostra que pequenas atitudes podem gerar grandes impactos para a preservação dos oceanos. Também achei interessante como transforma resíduos em novos recursos por meio da economia circular."
+      </blockquote>
+      <p>
+        A palestra da ECOSURF nos mostrou que sustentabilidade não é um conceito abstrato: ela se traduz em ações concretas, em números que podemos acompanhar e em escolhas cotidianas que, somadas, fazem diferença real para os oceanos.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     QUEM SOMOS / FOOTER
+════════════════════════════════════════════════════ -->
+<footer id="quem-somos">
+  <div class="footer-who">
+    <div class="footer-who-inner">
+      <div>
+        <h2>Quem Somos</h2>
+        <p>
+          Olá! Somos um grupo composto por 4 integrantes. Somos estudantes do
+          <strong style="color:var(--gold);">IFSC de Garopaba</strong>, e este blog foi criado
+          como um portfólio digital para a nossa disciplina de Arte.
+        </p>
+        <p>
+          Nosso objetivo é construir uma espécie de álbum, onde vamos reunir e compartilhar
+          nossas atividades, aprendizados e experiências ao longo deste período.
+        </p>
+        <p style="font-size:.85rem; color:#888; margin-top:1.5rem;">
+          Artes 2026 · IFSC Garopaba · Portfólio Digital
+        </p>
+      </div>
+      <div>
+        <p style="font-size:.72rem; letter-spacing:.15em; text-transform:uppercase; color:var(--gold); margin-bottom:.8rem;">Integrantes do Grupo</p>
+        <ul class="members-list">
+          <li><span class="badge">01</span>Anderson Miguel de Oliveira Zanatta</li>
+          <li><span class="badge">02</span>Eluney Ema Suazo</li>
+          <li><span class="badge">03</span>João Pedro Brasil Crescencio</li>
+          <li><span class="badge">04</span>Rodrigo Duarte Zomer</li>
+        </ul>
+        <div class="tags" style="margin-top:1.2rem;">
+          <span class="tag">Artes</span>
+          <span class="tag">IFSC Garopaba</span>
+          <span class="tag">2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
